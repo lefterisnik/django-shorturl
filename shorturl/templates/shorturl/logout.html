@@ -1,0 +1,6 @@
+{% extends 'shorturl/base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+    <div class="alert alert-success" role="alert">You successful log out. <a href="{% url 'login' %}">Login again</a></div>
+{% endblock %}

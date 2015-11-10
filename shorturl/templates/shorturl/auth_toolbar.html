@@ -1,0 +1,6 @@
+{% if user.is_authenticated %}
+    <ul class="nav navbar-nav navbar-right">
+        <li><a href="#" id="logout"><span class="glyphicon glyphicon-off" aria-hidden="true"></span></a></li>
+    </ul>
+    <p class="navbar-text navbar-right">Signed in as {{ user.username }}</p>
+{% endif %}

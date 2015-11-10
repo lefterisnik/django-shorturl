@@ -51,5 +51,7 @@ setup(
         'Programming Language :: Python :: 2.7',
     ],
     install_requires=[
+        'Django>=1.8,<1.9',
+        'python-social-auth',
     ],
 )
