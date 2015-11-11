@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 from django.conf import settings
 from django.apps import AppConfig
+from django.db.models.signals import post_save
 from django.core.exceptions import ImproperlyConfigured
 from django.utils.translation import ugettext_lazy as _
+
+from .signals import *
 
 
 class ShortURLConfig(AppConfig):
@@ -39,3 +42,11 @@ class ShortURLConfig(AppConfig):
 
         if 'django.contrib.staticfiles' not in settings.INSTALLED_APPS:
             raise ImproperlyConfigured("Short URL requires 'django.contrib.staticfiles' in 'INSTALLED_APPS'.")
+
+
+        # Connect signals
+        try:
+            ShortURL = self.get_model('ShortURL')
+            post_save.connect(update_info, ShortURL)
+        except LookupError:
+            raise ImproperlyConfigured("Short URL requires 'ShortURL' model.")
