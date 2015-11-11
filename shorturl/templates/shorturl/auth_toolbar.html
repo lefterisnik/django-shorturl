@@ -1,4 +1,9 @@
 {% if user.is_authenticated %}
+    <ul class="nav navbar-nav">
+        <li><a href="{% url 'retrieve-urls' %}">My URLs</a></li>
+        <li><a href="{% url 'retrieve-original' %}">Get Original URL</a></li>
+    </ul>
+
     <ul class="nav navbar-nav navbar-right">
         <li><a href="#" id="logout"><span class="glyphicon glyphicon-off" aria-hidden="true"></span></a></li>
     </ul>

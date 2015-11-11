@@ -1,0 +1,28 @@
+{% extends 'shorturl/base.html' %}
+
+{% block content %}
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+        {% for obj in object_list %}
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="heading{{ forloop.counter }}">
+                    <h4 class="panel-title">
+                        <a {%if not forloop.first %}class="collapsed"{% endif %}role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ forloop.counter }}" aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}" aria-controls="collapse{{ forloop.counter }}">
+                        {{ obj.orig_url|safe }}
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapse{{ forloop.counter }}" class="panel-collapse collapse {% if forloop.first %}in{% endif %}" role="tabpanel" aria-labelledby="heading{{ forloop.counter }}">
+                    <div class="panel-body">
+                        <a href="{% url 'retrieve-details' obj.pk %}">See details</a>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="alert alert-warning alert-dismissible" role="alert">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              No urls found.
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

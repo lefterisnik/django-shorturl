@@ -1,0 +1,15 @@
+{% extends 'shorturl/base.html' %}
+{% load shorturl_tags %}
+
+{% block content %}
+        <dl class="dl-horizontal">
+            <dt>Original URL</dt>
+            <dd>{{ object.orig_url }}</dd>
+            <dt>Shrort URL</dt>
+            <dd>{% full_shorturl object.get_info.short_url %}</dd>
+            <dt>Shorten happened</dt>
+            <dd>{{ object.c_time }}</dd>
+            <dt>Accessed</dt>
+            <dd>{{ object.get_info.views }}</dd>
+        </dl>
+{% endblock %}

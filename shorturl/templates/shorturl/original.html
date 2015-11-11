@@ -1,0 +1,23 @@
+{% extends 'shorturl/base.html' %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_bootstrap }}
+        <button type="submit" class="btn btn-primary">Get original URL</button>
+    </form>
+    <br/>
+    {% if obj %}
+        <div class="well">
+            <blockquote>
+                <p>The original url</p>
+                <footer>{{ obj.orig_url }}</footer>
+            </blockquote>
+        </div>
+    {% elif not obj and msg %}
+        <div class="alert alert-warning alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            No matches found.
+        </div>
+    {% endif %}
+{% endblock %}
