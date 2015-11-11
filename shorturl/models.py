@@ -15,6 +15,9 @@ class ShortURL(models.Model):
     orig_url = models.URLField(_('original url'), max_length=200)
     c_time = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        app_label = 'shorturl'
+
     def __unicode__(self):
         return '%s, %s, %s' % (self.orig_url, self.id, self.hash_id)
 
@@ -41,6 +44,9 @@ class ShortURLInfo(models.Model):
     base_obj = models.OneToOneField(ShortURL)
     short_url = models.CharField(max_length=23)
     views = models.BigIntegerField(default=0, editable=False)
+
+    class Meta:
+        app_label = 'shorturl'
 
     def __unicode__(self):
         return self.short_url

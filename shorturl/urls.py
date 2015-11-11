@@ -14,7 +14,7 @@ context = dict(
 
 urlpatterns = [
     url(r'^$', IndexPageView.as_view(), name='index'),
-    url(r'^retrive-original/', RetrieveOriginalPageView.as_view(), name='retrieve-original'),
+    url(r'^retrieve-original/', RetrieveOriginalPageView.as_view(), name='retrieve-original'),
     url(r'^retrieve-urls/', RetrieveURLsPageView.as_view(), name='retrieve-urls'),
     url(r'^retrieve-details/(?P<pk>[0-9]+)/', RetrieveURLDetailsPageView.as_view(), name='retrieve-details'),
 
