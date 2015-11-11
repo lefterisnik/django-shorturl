@@ -78,4 +78,4 @@ class AuthenticatedViews(TestCase):
         obj = ShortURL.objects.create(user=self.user, orig_url='http://www.example.com')
 
         response = self.client.get('/%s/' % obj.get_info.short_url)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
