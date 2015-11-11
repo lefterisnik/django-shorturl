@@ -1,1 +1,3 @@
-__version__ = '0.1.0'
+# -*- coding: utf-8 -*-
+
+default_app_config = 'shorturl.apps.ShortURLConfig'

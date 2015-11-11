@@ -16,11 +16,31 @@ try:
         INSTALLED_APPS=[
             "django.contrib.auth",
             "django.contrib.contenttypes",
+            "django.contrib.staticfiles",
             "django.contrib.sites",
             "shorturl",
         ],
+        TEMPLATES=[
+            {
+                'BACKEND': 'django.template.backends.django.DjangoTemplates',
+                'DIRS': [],
+                'APP_DIRS': True,
+                'OPTIONS': {
+                    'context_processors': [
+                        'django.template.context_processors.debug',
+                        'django.template.context_processors.request',
+                        'django.contrib.auth.context_processors.auth',
+                        'django.contrib.messages.context_processors.messages',
+                    ],
+                },
+            },
+        ],
         SITE_ID=1,
-        MIDDLEWARE_CLASSES=(),
+        MIDDLEWARE_CLASSES=(
+            'django.contrib.sessions.middleware.SessionMiddleware',
+            'django.contrib.auth.middleware.AuthenticationMiddleware',
+        ),
+        STATIC_URL = '/static/'
     )
 
     try:
