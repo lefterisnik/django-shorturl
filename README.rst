@@ -5,6 +5,8 @@ Open source django short url app
 .. image:: https://travis-ci.org/lefterisnik/django-shorturl.png?branch=master
     :target: https://travis-ci.org/lefterisnik/django-shorturl
 
+.. contents:: `Table of contents`
+
 A django short URL app.
 
 Requirements
@@ -57,18 +59,51 @@ Quickstart
         'https://www.googleapis.com/auth/userinfo.profile'
     ]
 
-  To function properly you must go to Google Developers Console and create credentials and enable Google+ API.
+   To function properly you must go to Google Developers Console and create credentials and enable Google+ API.
 
 5. Include the shortul URLconf in your project urls.py like this::
 
     url(r'^', include('shorturl.urls')),
 
-6. Migrate and run server
+6. Migrate and run server::
 
     python manage.py migrate
     python manage.py createsuperuser
     python manage.py runserver
 
+Documentation
+=============
+
+Sign in
+```````
+Method 1: At the home page click "Sign in" button. Then required credentials will be asked (use the credentials of the superuser you created at installation).
+Method 2: At the home page click "g+ Sign in".
+
+Generation of short Url
+```````````````````````
+Click "URL Shorten" at the main menu.
+
+There are two cases:
+
+Generate random short URL:
+At the field Url (*) type the long URL and click "Generate short URL".
+
+Generate desired short URL:
+At the field Url (*) type the long URL and at the field "Desired short url" the desired short url and click "Generate short URL".
+
+If the desired short URL exists there will be displayed an appropriate error message.
+
+List of all user's URLs
+```````````````````````
+Click "URL Shorten" at the main menu.
+
+For more details of each URL click "See details".
+
+Retrieve original URL
+`````````````````````
+Click "Get Original URL" at the main menu.
+
+At the fiels "Sort URL (*)" type the short URL and click "Get original URL".
 
 Cookiecutter Tools Used in Making This Package
 ----------------------------------------------
