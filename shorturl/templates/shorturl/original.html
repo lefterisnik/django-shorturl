@@ -11,7 +11,7 @@
         <div class="well">
             <blockquote>
                 <p>The original url</p>
-                <footer>{{ obj.orig_url }}</footer>
+                <footer>{{ obj.orig_url|escape }}</footer>
             </blockquote>
         </div>
     {% elif not obj and msg %}

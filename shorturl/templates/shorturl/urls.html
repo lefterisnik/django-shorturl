@@ -7,8 +7,8 @@
             <div class="panel panel-default">
                 <div class="panel-heading" role="tab" id="heading{{ forloop.counter }}">
                     <h4 class="panel-title">
-                        <a {%if not forloop.first %}class="collapsed"{% endif %}role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ forloop.counter }}" aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}" aria-controls="collapse{{ forloop.counter }}">
-                        {{ obj.orig_url|safe }}
+                        <a {%if not forloop.first %}class="collapsed"{% endif %} role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ forloop.counter }}" aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}" aria-controls="collapse{{ forloop.counter }}">
+                        {{ obj.orig_url|escape }}
                         </a>
                     </h4>
                 </div>

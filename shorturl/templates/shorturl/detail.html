@@ -4,7 +4,7 @@
 {% block content %}
         <dl class="dl-horizontal">
             <dt>Original URL</dt>
-            <dd>{{ object.orig_url }}</dd>
+            <dd>{{ object.orig_url|escape }}</dd>
             <dt>Shrort URL</dt>
             <dd>{% full_shorturl object.get_info.short_url %}</dd>
             <dt>Shorten happened</dt>
