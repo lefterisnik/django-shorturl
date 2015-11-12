@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import urlparse
 from django.conf import settings
 from django.db.models import F, Q
 from django.core.exceptions import ValidationError
@@ -61,28 +62,30 @@ class IndexPageView(TemplateView, ShortURLBaseView, ShortURLBaseMixin, FormMixin
             desired_short_url = form.cleaned_data['desired_short_url']
 
             if desired_short_url:
-                hash_id = saturate(desired_short_url)
-
-                # Create the object
-                try:
-                    shorturl_obj = ShortURL.objects.get(Q(hash_id=hash_id) | Q(id=hash_id))
-                    msg = _('The desired short URL is already taken. Please give a different.')
+                if len(create_full_shorturl(request, desired_short_url)) > settings.SHORTURL_MAX_LENGTH:
+                    msg = _('The desired short URL %s is more than 23 characters. Please give a shorter short URL.'
+                            % create_full_shorturl(request, desired_short_url))
                     form.add_error('desired_short_url', msg)
-                except ShortURL.DoesNotExist:
+                else:
+                    hash_id = saturate(desired_short_url)
+
+                    # Create the object
                     try:
+                        shorturl_obj = ShortURL.objects.get(Q(hash_id=hash_id) | Q(id=hash_id))
+                        msg = _('The desired short URL is already taken. Please give a different.')
+                        form.add_error('desired_short_url', msg)
+                    except ShortURL.DoesNotExist:
                         shorturl_obj = ShortURL.objects.create(hash_id=hash_id, user=request.user, orig_url=url)
                         context.update(obj=shorturl_obj)
-                    except ValidationError:
-                        msg = _('Short URL service reaches 23 maximum characters shorting')
-                        form.add_error('url', msg)
 
             else:
-                try:
-                    shorturl_obj = ShortURL.objects.create(user=request.user, orig_url=url)
-                    context.update(obj=shorturl_obj)
-                except ValidationError:
+                shorturl_obj = ShortURL.objects.create(user=request.user, orig_url=url)
+                if len(create_full_shorturl(request, desired_short_url)) > settings.SHORTURL_MAX_LENGTH:
                     msg = _('Short URL service reaches 23 maximum characters shorting')
                     form.add_error('url', msg)
+                    shorturl_obj.delete()
+                else:
+                    context.update(obj=shorturl_obj)
 
         return render(request, self.template_name, context)
 
@@ -105,14 +108,20 @@ class RetrieveOriginalPageView(TemplateView, ShortURLBaseView, ShortURLBaseMixin
             short_url = form.cleaned_data['short_url']
 
             if short_url:
-                id = saturate(short_url)
+                url = urlparse.urlparse(short_url)
+                if not check_netloc(request, url.netloc):
+                    msg = _('The request short url has different netloc.')
+                    form.add_error('short_url', msg)
+                else:
+                    short_url = short_url.split('/')[-1]
+                    id = saturate(short_url)
 
-                # Get the object
-                try:
-                    shorturl_obj = ShortURL.objects.get((Q(hash_id=id) | Q(id=id)) & Q(user=request.user))
-                    context.update(obj=shorturl_obj)
-                except ShortURL.DoesNotExist:
-                    pass
+                    # Get the object
+                    try:
+                        shorturl_obj = ShortURL.objects.get((Q(hash_id=id) | Q(id=id)) & Q(user=request.user))
+                        context.update(obj=shorturl_obj)
+                    except ShortURL.DoesNotExist:
+                        pass
 
         return render(request, self.template_name, context)
 

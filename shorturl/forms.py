@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 import re
 from django import forms
+from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
 from .models import *
@@ -28,10 +29,10 @@ class ShortURLForm(forms.Form, BaseShortURLForm):
                          label=_('Url (*)'),
                          widget=forms.TextInput(attrs={'class': 'form-control'}),
                          help_text=_('Enter a long URL to make short'))
-    desired_short_url = forms.CharField(max_length=23,
+    desired_short_url = forms.CharField(max_length=settings.SHORTURL_MAX_LENGTH,
                                         required=False,
                                         widget=forms.TextInput(attrs={'class': 'form-control'}),
-                                        help_text=_('Enter a desired short name'))
+                                        help_text=_('Enter a desired short name without domain'))
 
     def clean(self):
         """
@@ -45,9 +46,10 @@ class ShortURLForm(forms.Form, BaseShortURLForm):
             self.add_error('desired_short_url', msg)
 
 
+
 class GetOriginalURLForm(forms.Form, BaseShortURLForm):
-    short_url = forms.CharField(max_length=23,
-                                label=_('Short URL (*)'),
-                                required=True,
-                                widget=forms.TextInput(attrs={'class': 'form-control'}),
-                                help_text=_('Enter the searching short name'))
+    short_url = forms.URLField(max_length=settings.SHORTURL_MAX_LENGTH,
+                               label=_('Short URL (*)'),
+                               required=True,
+                               widget=forms.TextInput(attrs={'class': 'form-control'}),
+                               help_text=_('Enter the searching short url'))

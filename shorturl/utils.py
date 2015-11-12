@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import math
-from zlib import crc32
+from django.conf import settings
 from django.contrib.sites.shortcuts import get_current_site
 
 BASE = 62
@@ -82,3 +82,12 @@ def create_full_shorturl(request, short_url):
         prefix = 'http://%s/%s'
 
     return prefix % (get_current_site(request), short_url)
+
+
+def check_netloc(request, netloc):
+    """
+    Check netloc
+    """
+    if netloc != get_current_site(request).domain:
+        return False
+    return True

@@ -40,9 +40,14 @@ class ShortURLConfig(AppConfig):
             raise ImproperlyConfigured("Short URL requires 'django.contrib.auth.middleware.AuthenticationMiddleware'"
                                        " in 'MIDDLEWARE_CLASSES'.")
 
+        # Exam INSTALLED APPS
         if 'django.contrib.staticfiles' not in settings.INSTALLED_APPS:
             raise ImproperlyConfigured("Short URL requires 'django.contrib.staticfiles' in 'INSTALLED_APPS'.")
 
+        # Set default max length at short url
+        shorturl_max_length = getattr(settings, 'SHORTURL_MAX_LENGTH', None)
+        if shorturl_max_length is None:
+            setattr(settings, 'SHORTURL_MAX_LENGTH', 23)
 
         # Connect signals
         try:
