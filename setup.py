@@ -11,28 +11,19 @@ try:
 except ImportError:
     from distutils.core import setup
 
-version = shorturl.__version__
-
 if sys.argv[-1] == 'publish':
     os.system('python setup.py sdist upload')
     os.system('python setup.py bdist_wheel upload')
     sys.exit()
 
-if sys.argv[-1] == 'tag':
-    print("Tagging the version on github:")
-    os.system("git tag -a %s -m 'version %s'" % (version, version))
-    os.system("git push --tags")
-    sys.exit()
-
 readme = open('README.rst').read()
-history = open('HISTORY.rst').read().replace('.. :changelog:', '')
 
 setup(
     name='django-shorturl',
     packages=['shorturl'],
-    version=version,
+    version='0.1.0',
     description='A django short URL app.',
-    long_description=readme + '\n\n' + history,
+    long_description=readme,
     author='Lefteris Nikoltsios',
     author_email='lefteris.nikoltsios@gmail.com',
     url='https://github.com/lefterisnik/django-shorturl',
