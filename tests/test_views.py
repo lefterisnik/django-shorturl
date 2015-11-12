@@ -2,10 +2,8 @@
 from django.test import Client, TestCase
 from django.core.urlresolvers import reverse
 from django.contrib.auth import get_user_model
-from django.contrib.sites.shortcuts import get_current_site
 
 from shorturl.models import *
-from shorturl.utils import *
 
 
 class AnonymousViews(TestCase):
