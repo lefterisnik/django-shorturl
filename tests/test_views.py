@@ -45,16 +45,6 @@ class AuthenticatedViews(TestCase):
         response = self.client.get('/retrieve-original/')
         self.assertEqual(response.status_code, 200)
 
-    def test_post_home_post(self):
-        self.client.login(username='admin', password='admin')
-
-        response = self.client.post('/', {'url': 'http://www.example.com'})
-        self.assertEqual(response.status_code, 200)
-
-        obj = ShortURL.objects.get(orig_url='http://www.example.com')
-        short_url = 'http://example.com/%s' % obj.get_info.short_url
-        self.assertIn(short_url, response.content)
-
     def test_get_url_access_with_objs(self):
         self.client.login(username='admin', password='admin')
         obj = ShortURL.objects.create(user=self.user, orig_url='http://www.example.com')
@@ -77,3 +67,25 @@ class AuthenticatedViews(TestCase):
 
         response = self.client.get('/%s/' % obj.get_info.short_url)
         self.assertEqual(response.status_code, 302)
+
+    def test_post_home_post_simple(self):
+        self.client.login(username='admin', password='admin')
+
+        response = self.client.post('/', {'url': 'http://www.example.com'})
+        self.assertEqual(response.status_code, 200)
+
+        obj = ShortURL.objects.get(orig_url='http://www.example.com')
+        short_url = 'http://example.com/%s' % obj.get_info.short_url
+        self.assertIn(short_url, response.content)
+
+    def test_post_home_post_with_desired(self):
+        self.client.login(username='admin', password='admin')
+
+        response = self.client.post('/', {'url': 'http://www.example.com', 'desired_short_url': 'y0'})
+        self.assertEqual(response.status_code, 200)
+
+        obj = ShortURL.objects.get(orig_url='http://www.example.com')
+        self.assertEqual(u'y0', obj.get_info.short_url)
+
+        short_url = 'http://example.com/%s' % obj.get_info.short_url
+        self.assertIn(short_url, response.content)
